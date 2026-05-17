@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Islam Nagi — Embedded Software Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #0f1520;
+    --card: #131d2e;
+    --border: #1e2e45;
+    --accent: #00c8ff;
+    --accent2: #00ff9d;
+    --text: #d4e5f7;
+    --muted: #5a7a99;
+    --heading: #ffffff;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2.5rem;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 2.5rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    z-index: 1;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    color: var(--heading);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+
+  .hero-name span {
+    display: block;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.6s forwards;
+  }
+
+  .hero-desc {
+    max-width: 540px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.6rem;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.25s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,200,255,0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    background: rgba(0,200,255,0.05);
+    transform: translateY(-2px);
+  }
+
+  /* Decorative circuit line */
+  .hero-deco {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40%;
+    opacity: 0.15;
+    pointer-events: none;
+    display: none;
+  }
+
+  @media(min-width: 900px) { .hero-deco { display: block; } }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--heading);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    margin-top: 0.6rem;
+    border-radius: 2px;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .skill-card-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+  }
+
+  .skill-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 0.5rem;
+  }
+
+  .skill-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 3px;
+    background: rgba(0,200,255,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(0,200,255,0.2);
+    letter-spacing: 0.05em;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(0,200,255,0.4);
+    transform: translateY(-5px);
+  }
+
+  .project-card:hover::before { opacity: 1; }
+
+  .project-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 0.8rem;
+  }
+
+  .project-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+    flex: 1;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .project-link {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .project-link:hover { border-color: var(--accent); }
+
+  .lang-dot {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .lang-dot::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #555dbe;
+  }
+
+  /* EDUCATION & EXPERIENCE */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    transform: translateX(-4.5px);
+  }
+
+  .timeline-date {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-sub {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .timeline-desc {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  /* TOOLS */
+  .tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .tool-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .tool-chip:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    transform: scale(1.03);
+  }
+
+  /* VOLUNTEERING */
+  .vol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .vol-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.4rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .vol-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-3px);
+  }
+
+  .vol-role {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--heading);
+    margin-bottom: 0.3rem;
+  }
+
+  .vol-org {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--accent2);
+    margin-bottom: 0.3rem;
+  }
+
+  .vol-date {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  /* CONTACT */
+  #contact {
+    padding-bottom: 6rem;
+  }
+
+  .contact-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,255,0.08), transparent 70%);
+  }
+
+  .contact-box h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--heading);
+    margin-bottom: 0.8rem;
+  }
+
+  .contact-box p {
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2.5rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media(max-width: 640px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 3.5rem 1.2rem; }
+    #hero { padding: 5rem 1.2rem 3rem; }
+    .contact-box { padding: 2rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">&lt;IslamNagi /&gt;</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">// Embedded Software Engineer</div>
+  <h1 class="hero-name">
+    Islam<br/><span>Nagi</span>
+  </h1>
+  <div class="hero-role">eslamnagi144@gmail.com &nbsp;·&nbsp; Mansoura, Egypt</div>
+  <p class="hero-desc">
+    Embedded systems engineer and programmer with a focus on clean, reusable code.
+    Skilled in microcontroller projects (AVR, PIC, STM32), software development,
+    and problem-solving in real-world applications. 3rd-year Computer &amp; Control
+    Systems student at Mansoura University — GPA: 96.1% Excellent.
+  </p>
+  <div class="hero-btns">
+    <a href="#projects" class="btn btn-primary">View Projects →</a>
+    <a href="https://github.com/IslamNagi14" target="_blank" class="btn btn-ghost">GitHub</a>
+    <a href="https://www.linkedin.com/in/islamnagi14" target="_blank" class="btn btn-ghost">LinkedIn</a>
+  </div>
+
+  <!-- decorative SVG -->
+  <svg class="hero-deco" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="160" fill="none" stroke="#00c8ff" stroke-width="1"/>
+    <circle cx="200" cy="200" r="120" fill="none" stroke="#00ff9d" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="80" fill="none" stroke="#00c8ff" stroke-width="1"/>
+    <line x1="40" y1="200" x2="360" y2="200" stroke="#00c8ff" stroke-width="0.5"/>
+    <line x1="200" y1="40" x2="200" y2="360" stroke="#00c8ff" stroke-width="0.5"/>
+    <line x1="87" y1="87" x2="313" y2="313" stroke="#00ff9d" stroke-width="0.5"/>
+    <line x1="313" y1="87" x2="87" y2="313" stroke="#00ff9d" stroke-width="0.5"/>
+    <circle cx="200" cy="40" r="4" fill="#00c8ff"/>
+    <circle cx="200" cy="360" r="4" fill="#00c8ff"/>
+    <circle cx="40" cy="200" r="4" fill="#00c8ff"/>
+    <circle cx="360" cy="200" r="4" fill="#00c8ff"/>
+    <circle cx="200" cy="200" r="6" fill="#00ff9d"/>
+  </svg>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label reveal">// 01. Technical Skills</div>
+  <h2 class="section-title reveal">What I Work With</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">⚙️</div>
+      <div class="skill-card-title">Embedded Systems</div>
+      <p style="font-size:0.88rem;color:var(--muted);line-height:1.6">Real-time microcontroller programming with deep hardware awareness.</p>
+      <div class="skill-card-tags">
+        <span class="tag">ATmega32</span><span class="tag">PIC</span><span class="tag">STM32</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">💻</div>
+      <div class="skill-card-title">Languages</div>
+      <p style="font-size:0.88rem;color:var(--muted);line-height:1.6">Strong command of low-level and high-level programming languages.</p>
+      <div class="skill-card-tags">
+        <span class="tag">C</span><span class="tag">Embedded C</span><span class="tag">Python</span><span class="tag">OOP</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">📡</div>
+      <div class="skill-card-title">Communication Protocols</div>
+      <p style="font-size:0.88rem;color:var(--muted);line-height:1.6">Proficient with standard embedded communication interfaces.</p>
+      <div class="skill-card-tags">
+        <span class="tag">USART</span><span class="tag">SPI</span><span class="tag">I2C</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-card-icon">🗄️</div>
+      <div class="skill-card-title">Data Structures & Databases</div>
+      <p style="font-size:0.88rem;color:var(--muted);line-height:1.6">Solid foundation in algorithms, memory management, and SQL.</p>
+      <div class="skill-card-tags">
+        <span class="tag">Stack</span><span class="tag">Queue</span><span class="tag">Linked List</span><span class="tag">SQL</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools" style="padding-top:0">
+  <div class="section-label reveal">// 02. Tools & IDEs</div>
+  <h2 class="section-title reveal">My Toolbox</h2>
+  <div class="tools-list reveal">
+    <div class="tool-chip">🔧 STM32CubeIDE</div>
+    <div class="tool-chip">🔧 Eclipse</div>
+    <div class="tool-chip">🔧 Arduino IDE</div>
+    <div class="tool-chip">🔧 VS Code</div>
+    <div class="tool-chip">🔧 Mikro C for PIC</div>
+    <div class="tool-chip">🔧 Proteus</div>
+    <div class="tool-chip">🔧 MATLAB</div>
+    <div class="tool-chip">🐍 Anaconda / Jupyter</div>
+    <div class="tool-chip">📐 Git / GitHub</div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label reveal">// 03. Projects</div>
+  <h2 class="section-title reveal">Things I've Built</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-num">01 — Freelance</div>
+      <div class="project-title">Oxygen/Vacuum Pressure Monitoring System</div>
+      <div class="project-desc">
+        Designed and implemented a real-time pressure monitoring system on PIC16F628A,
+        featuring LCD display, buzzer alerts, and LED indicators. Delivered as a
+        freelancing project with production-ready reliability.
+      </div>
+      <div class="project-footer">
+        <div class="lang-dot">PIC16F628A · C</div>
+        <span class="tag">Nov 2025</span>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">02 — Personal</div>
+      <div class="project-title">Simple Calculator (AVR)</div>
+      <div class="project-desc">
+        A fully functional calculator running on an AVR microcontroller. Handles
+        addition, subtraction, multiplication, and division. Input via 4×4 keypad,
+        output on character LCD.
+      </div>
+      <div class="project-footer">
+        <div class="lang-dot" style="--lang-color:#555dbe">ATmega32 · C</div>
+        <a href="https://github.com/IslamNagi14/Simple_Calculator" class="project-link" target="_blank">View on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">03 — Personal</div>
+      <div class="project-title">Library Management System</div>
+      <div class="project-desc">
+        A feature-complete CLI library system in C with full CRUD operations for
+        admins, users, and books. Demonstrates clean modular architecture and
+        data management principles.
+      </div>
+      <div class="project-footer">
+        <div class="lang-dot">C</div>
+        <a href="https://github.com/IslamNagi14/Library_management_system" class="project-link" target="_blank">View on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">04 — Practice</div>
+      <div class="project-title">AVR Modules & Projects</div>
+      <div class="project-desc">
+        A collection of reusable AVR peripheral drivers and mini-projects including
+        GPIO, timers, ADC, and communication modules — serving as a personal hardware
+        abstraction library.
+      </div>
+      <div class="project-footer">
+        <div class="lang-dot">Embedded C</div>
+        <a href="https://github.com/IslamNagi14/AVR_ModulesAndProjects" class="project-link" target="_blank">View on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-num">05 — Practice</div>
+      <div class="project-title">Data Structures in C</div>
+      <div class="project-desc">
+        Implementations of classic data structures — Stack, Queue, and Linked List —
+        built from scratch in C to strengthen algorithmic thinking and memory management skills.
+      </div>
+      <div class="project-footer">
+        <div class="lang-dot">C</div>
+        <a href="https://github.com/IslamNagi14/Data-Structure" class="project-link" target="_blank">View on GitHub ↗</a>
+      </div>
+    </div>
+
+    <div class="project-card reveal" style="border-style:dashed">
+      <div class="project-num">06 — Explore</div>
+      <div class="project-title">More on GitHub →</div>
+      <div class="project-desc">
+        11 public repositories and counting — including STARKS tasks, CAT Reloaded
+        embedded exercises, and more embedded systems experiments.
+      </div>
+      <div class="project-footer">
+        <a href="https://github.com/IslamNagi14" class="project-link" target="_blank" style="font-size:0.9rem">github.com/IslamNagi14 ↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE & EDUCATION -->
+<section id="experience">
+  <div class="section-label reveal">// 04. Experience & Education</div>
+  <h2 class="section-title reveal">Background</h2>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">2022 — 2027 (Expected)</div>
+      <div class="timeline-title">B.Sc. Computer & Control Systems Engineering</div>
+      <div class="timeline-sub">Faculty of Engineering, Mansoura University</div>
+      <div class="timeline-desc">Cumulative Grade: <strong style="color:var(--accent2)">Excellent — 96.1%</strong></div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">NTI</div>
+      <div class="timeline-title">Embedded Systems Course</div>
+      <div class="timeline-sub">National Telecommunication Institute</div>
+      <div class="timeline-desc">Intensive training in embedded systems design and microcontroller programming.</div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-date">Nov 2025 — Freelancing</div>
+      <div class="timeline-title">Embedded Systems Developer (Freelance)</div>
+      <div class="timeline-sub">Self-employed</div>
+      <div class="timeline-desc">Delivered a commercial Oxygen/Vacuum Pressure Monitoring System on PIC16F628A for a client.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VOLUNTEERING -->
+<section id="volunteering" style="padding-top:0">
+  <div class="section-label reveal">// 05. Volunteering</div>
+  <h2 class="section-title reveal">Leadership & Community</h2>
+  <div class="vol-grid">
+    <div class="vol-card reveal">
+      <div class="vol-role">Technical Director</div>
+      <div class="vol-org">STARKS MU</div>
+      <div class="vol-date">May 2025 – Present</div>
+    </div>
+    <div class="vol-card reveal">
+      <div class="vol-role">Vice Head, Embedded Circle</div>
+      <div class="vol-org">STARKS MU</div>
+      <div class="vol-date">Nov 2024 – Present</div>
+    </div>
+    <div class="vol-card reveal">
+      <div class="vol-role">Supervisor, Embedded Circle</div>
+      <div class="vol-org">CAT Reloaded</div>
+      <div class="vol-date">Feb 2025 – Present</div>
+    </div>
+    <div class="vol-card reveal">
+      <div class="vol-role">Supervisor, HR Circle</div>
+      <div class="vol-org">STARKS MU</div>
+      <div class="vol-date">Nov 2024 – Present</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-box reveal">
+    <h2>Let's Build Something</h2>
+    <p>Open to embedded systems roles, freelance projects, and collaboration. Feel free to reach out!</p>
+    <div class="contact-links">
+      <a href="mailto:eslamnagi144@gmail.com" class="btn btn-primary">📧 Email Me</a>
+      <a href="https://www.linkedin.com/in/islamnagi14" target="_blank" class="btn btn-ghost">LinkedIn</a>
+      <a href="https://github.com/IslamNagi14" target="_blank" class="btn btn-ghost">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 Islam Mohamed Nagi &nbsp;·&nbsp; Embedded Software Engineer &nbsp;·&nbsp; Mansoura, Egypt
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Stagger children of grids
+  document.querySelectorAll('.skills-grid, .projects-grid, .vol-grid').forEach(grid => {
+    [...grid.children].forEach((child, i) => {
+      child.style.transitionDelay = (i * 0.08) + 's';
+    });
+  });
+</script>
+</body>
+</html>
